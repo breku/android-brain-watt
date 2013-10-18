@@ -1,9 +1,9 @@
 package com.brekol.manager;
 
 import com.brekol.model.scene.*;
-import com.brekol.model.util.HighScore;
 import com.brekol.util.ConstantsUtil;
-import com.brekol.util.GameType;
+import com.brekol.util.LevelDifficulty;
+import com.brekol.util.MathParameter;
 import com.brekol.util.SceneType;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -94,7 +94,7 @@ public class SceneManager {
         ResourcesManager.getInstance().unloadMenuTextures();
     }
 
-    public void loadGameScene(final GameType gameType) {
+    public void loadGameScene(final LevelDifficulty levelDifficulty, final MathParameter mathParameter) {
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadGameTypeTextures();
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ConstantsUtil.LOADING_SCENE_TIME, new ITimerCallback() {
@@ -102,7 +102,7 @@ public class SceneManager {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadGameResources();
-                gameScene = new GameScene(gameType);
+                gameScene = new GameScene(levelDifficulty, mathParameter);
                 setScene(gameScene);
             }
         }));
@@ -122,7 +122,7 @@ public class SceneManager {
         }));
     }
 
-    public void loadHighScoreSceneFrom(SceneType sceneType, final HighScore highScore) {
+    public void loadHighScoreSceneFrom(SceneType sceneType) {
         switch (sceneType) {
             case MENU:
                 setScene(loadingScene);
@@ -146,7 +146,7 @@ public class SceneManager {
                     public void onTimePassed(TimerHandler pTimerHandler) {
                         ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                         ResourcesManager.getInstance().loadRecordResources();
-                        recordScene = new HighScoreScene(highScore);
+                        recordScene = new HighScoreScene();
                         setScene(recordScene);
                     }
                 }));

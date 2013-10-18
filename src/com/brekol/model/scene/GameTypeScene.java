@@ -1,14 +1,13 @@
 package com.brekol.model.scene;
 
-import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
+import com.brekol.model.shape.GameTypeMenuItem;
 import com.brekol.util.ConstantsUtil;
-import com.brekol.util.GameType;
+import com.brekol.util.LevelDifficulty;
+import com.brekol.util.MathParameter;
 import com.brekol.util.SceneType;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
-import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 
 /**
@@ -18,10 +17,6 @@ import org.andengine.entity.sprite.Sprite;
 public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemClickListener {
 
     private MenuScene menuScene;
-    private final int CLASSIC_GAME = 0;
-    private final int HALFMARATHON_GAME = 1;
-    private final int MARATHON_GAME = 2;
-
 
     @Override
     public void createScene(Object... objects) {
@@ -36,21 +31,27 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
     private void createButtons() {
         menuScene = new MenuScene(camera);
         menuScene.setPosition(0, 0);
-
-        final IMenuItem classicGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(CLASSIC_GAME, ResourcesManager.getInstance().getButtonClassicGameTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem halfmarathonGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(HALFMARATHON_GAME, ResourcesManager.getInstance().getButtonHalfmarathonGameTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem marathonGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MARATHON_GAME, ResourcesManager.getInstance().getButtonMarathonGameTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-
-        menuScene.addMenuItem(classicGameItem);
-        menuScene.addMenuItem(halfmarathonGameItem);
-        menuScene.addMenuItem(marathonGameItem);
-
-        menuScene.buildAnimations();
         menuScene.setBackgroundEnabled(false);
+        menuScene.buildAnimations();
 
-        classicGameItem.setPosition(400, 300);
-        halfmarathonGameItem.setPosition(400, 200);
-        marathonGameItem.setPosition(400, 100);
+        menuScene.addMenuItem(new GameTypeMenuItem(1, LevelDifficulty.EASY, MathParameter.ADD, 200, 300));
+        menuScene.addMenuItem(new GameTypeMenuItem(2, LevelDifficulty.EASY, MathParameter.SUB, 300, 300));
+        menuScene.addMenuItem(new GameTypeMenuItem(3, LevelDifficulty.EASY, MathParameter.MUL, 400, 300));
+        menuScene.addMenuItem(new GameTypeMenuItem(4, LevelDifficulty.EASY, MathParameter.DIV, 500, 300));
+        menuScene.addMenuItem(new GameTypeMenuItem(5, LevelDifficulty.EASY, MathParameter.ALL, 600, 300));
+
+        menuScene.addMenuItem(new GameTypeMenuItem(6, LevelDifficulty.EASY, MathParameter.ADD, 200, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(7, LevelDifficulty.EASY, MathParameter.SUB, 300, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(8, LevelDifficulty.EASY, MathParameter.MUL, 400, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(9, LevelDifficulty.EASY, MathParameter.DIV, 500, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(10, LevelDifficulty.EASY, MathParameter.ALL, 600, 200));
+
+        menuScene.addMenuItem(new GameTypeMenuItem(11, LevelDifficulty.EASY, MathParameter.ADD, 200, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(12, LevelDifficulty.EASY, MathParameter.SUB, 300, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(13, LevelDifficulty.EASY, MathParameter.MUL, 400, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(14, LevelDifficulty.EASY, MathParameter.DIV, 500, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(15, LevelDifficulty.EASY, MathParameter.ALL, 600, 100));
+
 
         menuScene.setOnMenuItemClickListener(this);
 
@@ -75,19 +76,7 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
     @Override
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
-        switch (pMenuItem.getID()) {
-            case CLASSIC_GAME:
-                SceneManager.getInstance().loadGameScene(GameType.CLASSIC);
-                break;
-            case HALFMARATHON_GAME:
-                SceneManager.getInstance().loadGameScene(GameType.HALFMARATHON);
-                break;
-            case MARATHON_GAME:
-                SceneManager.getInstance().loadGameScene(GameType.MARATHON);
-                break;
-            default:
-                return false;
-        }
-        return false;
+        SceneManager.getInstance().loadGameScene(((GameTypeMenuItem) pMenuItem).getLevelDifficulty(), ((GameTypeMenuItem) pMenuItem).getMathParameter());
+        return true;
     }
 }

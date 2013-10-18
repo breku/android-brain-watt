@@ -3,7 +3,10 @@ package com.brekol.model.scene;
 import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
 import com.brekol.matcher.ClassTouchAreaMacher;
+import com.brekol.service.MathService;
 import com.brekol.util.ConstantsUtil;
+import com.brekol.util.LevelDifficulty;
+import com.brekol.util.MathParameter;
 import com.brekol.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.sprite.Sprite;
@@ -15,6 +18,10 @@ import org.andengine.entity.sprite.Sprite;
 public class GameScene extends BaseScene {
 
     private HUD gameHUD;
+
+    private MathService mathService;
+    private LevelDifficulty levelDifficulty;
+    private MathParameter mathParameter;
 
     /**
      * @param objects objects[0] - GameType
@@ -39,6 +46,11 @@ public class GameScene extends BaseScene {
     private void init(Object... objects) {
         clearUpdateHandlers();
         clearTouchAreas();
+
+        levelDifficulty = (LevelDifficulty) objects[0];
+        mathParameter = (MathParameter) objects[1];
+
+        mathService = new MathService();
     }
 
 
@@ -51,6 +63,16 @@ public class GameScene extends BaseScene {
         unregisterTouchAreas(new ClassTouchAreaMacher(Sprite.class));
         attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2,
                 ResourcesManager.getInstance().getBackgroundGameTextureRegion(), vertexBufferObjectManager));
+        createGreenButton();
+        createRedButton();
+    }
+
+    private void createRedButton() {
+        attachChild(new Sprite(100, 100, ResourcesManager.getInstance().getButtonNoTextureRegion(), vertexBufferObjectManager));
+    }
+
+    private void createGreenButton() {
+        attachChild(new Sprite(700, 100, ResourcesManager.getInstance().getButtonOkTextureRegion(), vertexBufferObjectManager));
     }
 
     @Override

@@ -5,11 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.brekol.util.GameType;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.brekol.util.LevelDifficulty;
+import com.brekol.util.MathParameter;
 
 /**
  * User: Breku
@@ -17,12 +14,13 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "myDB";
+    private static final String DB_NAME = "myDB_brain_watt";
     private static final String TABLE_NAME = "HIGH_SCORES";
     private static final String COLUMN_ID = "ID";
-    private static final String COLUMN_GAME_TYPE = "GAME_TYPE";
+    private static final String COLUMN_LEVEL_DIFFICULTY = "LEVEL_DIFFICULTY";
+    private static final String COLUMN_MATH_PARAMETER = "MATH_PARAMETER";
     private static final String COLUMN_SCORE = "SCORE";
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
 
 
     public DatabaseHelper(Context context) {
@@ -38,8 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_GAME_TYPE + " TEXT, " +
-                COLUMN_SCORE + " REAL" +
+                "LEVEL_DIFFICULTY TEXT, " +
+                "MATH_PARAMETER TEXT, " +
+                "SCORE TEXT " +
                 ")");
         createDefaultHighScoreValues(sqLiteDatabase);
     }
@@ -58,48 +57,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public List<Float> getHighScoresFor(GameType gameType) {
-        List<Float> result = new ArrayList<Float>();
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT " + COLUMN_SCORE + " FROM " + TABLE_NAME + " WHERE " + COLUMN_GAME_TYPE + " = ?", new String[]{gameType.toString()});
-        while (cursor.moveToNext()) {
-            result.add(cursor.getFloat(0));
-        }
-        Collections.sort(result);
-        cursor.close();
-        database.close();
-        return result;
-    }
-
-    public void addToHighScores(GameType gameType, float score) {
-        SQLiteDatabase database = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_GAME_TYPE, gameType.toString());
-        values.put(COLUMN_SCORE, score);
-        database.insert(TABLE_NAME, null, values);
-        database.close();
-    }
-
-    public void removeLastResult(GameType gameType) {
-        SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM HIGH_SCORES WHERE ID = (SELECT ID FROM HIGH_SCORES WHERE GAME_TYPE = ? ORDER BY SCORE DESC LIMIT 1)", new String[]{gameType.toString()});
-        database.close();
-    }
-
-
-    public boolean isRecord(float score, GameType gameType) {
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT " + COLUMN_SCORE + " FROM " + TABLE_NAME + " WHERE " + COLUMN_GAME_TYPE + " = ?", new String[]{gameType.toString()});
-        while (cursor.moveToNext()) {
-            if (score < cursor.getLong(0)) {
-                cursor.close();
-                return true;
-            }
-        }
-        cursor.close();
-        database.close();
-        return false;
-    }
 
     private boolean isTableExists(String tableName) {
         SQLiteDatabase db = getReadableDatabase();
@@ -120,28 +77,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void createDefaultHighScoreValues(SQLiteDatabase sqLiteDatabase) {
 
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.ADD);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.SUB);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.MUL);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.DIV);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.ALL);
+
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.ADD);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.SUB);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.MUL);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.DIV);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.ALL);
+
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.ADD);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.SUB);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.MUL);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.DIV);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.ALL);
+    }
+
+    private void createDefaultHighScoreRecord(SQLiteDatabase sqLiteDatabase, LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COLUMN_GAME_TYPE, GameType.CLASSIC.toString());
-        contentValues.put(COLUMN_SCORE, 999);
-
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+        contentValues.put(COLUMN_LEVEL_DIFFICULTY, levelDifficulty.toString());
+        contentValues.put(COLUMN_MATH_PARAMETER, mathParameter.toString());
+        contentValues.put(COLUMN_SCORE, 0);
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
-        contentValues.put(COLUMN_GAME_TYPE, GameType.HALFMARATHON.toString());
-        contentValues.put(COLUMN_SCORE, 999);
-
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-
-        contentValues.put(COLUMN_GAME_TYPE, GameType.MARATHON.toString());
-        contentValues.put(COLUMN_SCORE, 999);
-
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
     }
 
 }

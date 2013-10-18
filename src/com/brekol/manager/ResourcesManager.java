@@ -1,6 +1,7 @@
 package com.brekol.manager;
 
 import android.graphics.Color;
+import com.brekol.util.MathParameter;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
@@ -39,7 +40,7 @@ public class ResourcesManager {
             recordTextureAtlas, gameTypeTextureAtlas, gameTextureAtlas;
 
     // Game
-    private ITextureRegion backgroundGameTextureRegion;
+    private ITextureRegion backgroundGameTextureRegion, buttonOkTextureRegion, buttonNoTextureRegion;
 
     // Splash
     private ITextureRegion splashTextureRegion;
@@ -61,8 +62,8 @@ public class ResourcesManager {
     private ITextureRegion recordBackgroundTextureRegion, buttonHighScoreTextureRegion;
 
     // Game Type
-    private ITextureRegion buttonClassicGameTextureRegion, buttonHalfmarathonGameTextureRegion,
-            buttonMarathonGameTextureRegion, backgroundGameTypeTextureRegion;
+    private ITextureRegion buttonAddTextureRegion, buttonSubTextureRegion, buttonMulTextureRegion, buttonDivTextureRegion,
+            backgroundGameTypeTextureRegion, buttonAllTextureRegion;
 
     private List<Sound> winSoundList;
     private List<Sound> loseSoundList;
@@ -91,9 +92,9 @@ public class ResourcesManager {
 
     public void loadGameResources() {
         loadGameGraphics();
-//        loadGameFonts();
-//        loadGameMusic();
-//        loadEndGameResources();
+        loadGameFonts();
+        loadGameMusic();
+        loadEndGameResources();
     }
 
     public void loadEndGameResources() {
@@ -117,9 +118,11 @@ public class ResourcesManager {
         gameTypeTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 
         backgroundGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "background.jpg");
-        buttonClassicGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "classic.png");
-        buttonHalfmarathonGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "halfmarathon.png");
-        buttonMarathonGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "marathon.png");
+        buttonAddTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "add.png");
+        buttonSubTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "sub.png");
+        buttonMulTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "mul.png");
+        buttonDivTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "div.png");
+        buttonAllTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "all.png");
 
         try {
             gameTypeTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
@@ -224,6 +227,9 @@ public class ResourcesManager {
         gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 
         backgroundGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
+        buttonOkTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "button_ok.png");
+        buttonNoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "button_no.png");
+
 
         try {
             gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
@@ -293,6 +299,22 @@ public class ResourcesManager {
         whiteFont.load();
     }
 
+    public ITextureRegion getTextureFor(MathParameter mathParameter) {
+        switch (mathParameter) {
+            case ADD:
+                return buttonAddTextureRegion;
+            case SUB:
+                return buttonSubTextureRegion;
+            case MUL:
+                return buttonMulTextureRegion;
+            case DIV:
+                return buttonDivTextureRegion;
+            case ALL:
+                return buttonAllTextureRegion;
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
 
     public void unloadSplashScreen() {
         splashTextureAtlas.unload();
@@ -408,18 +430,6 @@ public class ResourcesManager {
         return buttonHighScoreTextureRegion;
     }
 
-    public ITextureRegion getButtonClassicGameTextureRegion() {
-        return buttonClassicGameTextureRegion;
-    }
-
-    public ITextureRegion getButtonHalfmarathonGameTextureRegion() {
-        return buttonHalfmarathonGameTextureRegion;
-    }
-
-    public ITextureRegion getButtonMarathonGameTextureRegion() {
-        return buttonMarathonGameTextureRegion;
-    }
-
     public ITextureRegion getBackgroundGameTypeTextureRegion() {
         return backgroundGameTypeTextureRegion;
     }
@@ -435,4 +445,13 @@ public class ResourcesManager {
     public ITextureRegion getBackgroundGameTextureRegion() {
         return backgroundGameTextureRegion;
     }
+
+    public ITextureRegion getButtonNoTextureRegion() {
+        return buttonNoTextureRegion;
+    }
+
+    public ITextureRegion getButtonOkTextureRegion() {
+        return buttonOkTextureRegion;
+    }
+
 }
