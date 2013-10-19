@@ -10,6 +10,7 @@ import com.brekol.util.MathParameter;
 import com.brekol.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 
 /**
  * User: Breku
@@ -63,6 +64,8 @@ public class GameScene extends BaseScene {
         unregisterTouchAreas(new ClassTouchAreaMacher(Sprite.class));
         attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2,
                 ResourcesManager.getInstance().getBackgroundGameTextureRegion(), vertexBufferObjectManager));
+        attachChild(new Text(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 4, ResourcesManager.getInstance().getBlackFont(),
+                "AAA...", vertexBufferObjectManager));
         createGreenButton();
         createRedButton();
     }

@@ -87,12 +87,12 @@ public class ResourcesManager {
 
     public void loadMainMenuResources() {
         loadMainMenuGraphics();
-        loadMainMenuFonts();
+        loadWhiteFont();
+        loadBlackFont();
     }
 
     public void loadGameResources() {
         loadGameGraphics();
-        loadGameFonts();
         loadGameMusic();
         loadEndGameResources();
     }
@@ -276,9 +276,9 @@ public class ResourcesManager {
         menuTextureAtlas.load();
     }
 
-    private void loadGameFonts() {
+    private void loadBlackFont() {
         if (gameFontTextureAtlas != null) {
-            gameFontTextureAtlas.load();
+            return;
         }
         FontFactory.setAssetBasePath("font/");
         gameFontTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
@@ -288,7 +288,7 @@ public class ResourcesManager {
     }
 
 
-    private void loadMainMenuFonts() {
+    private void loadWhiteFont() {
         if (menuFontTextureAtlas != null) {
             return;
         }
