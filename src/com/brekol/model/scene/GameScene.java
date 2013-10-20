@@ -3,6 +3,7 @@ package com.brekol.model.scene;
 import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
 import com.brekol.matcher.ClassTouchAreaMacher;
+import com.brekol.pool.MathEquationPool;
 import com.brekol.service.MathService;
 import com.brekol.util.ConstantsUtil;
 import com.brekol.util.LevelDifficulty;
@@ -23,6 +24,8 @@ public class GameScene extends BaseScene {
     private MathService mathService;
     private LevelDifficulty levelDifficulty;
     private MathParameter mathParameter;
+    private MathEquationPool pool;
+
 
     /**
      * @param objects objects[0] - GameType
@@ -52,6 +55,8 @@ public class GameScene extends BaseScene {
         mathParameter = (MathParameter) objects[1];
 
         mathService = new MathService();
+        pool = new MathEquationPool(levelDifficulty, mathParameter);
+        pool.batchAllocatePoolItems(ConstantsUtil.INITIAL_POOL_SIZE);
     }
 
 

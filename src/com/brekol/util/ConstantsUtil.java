@@ -15,4 +15,6 @@ public class ConstantsUtil implements Constants, LevelConstants {
     public static final float LOADING_SCENE_TIME = 0.1f;
     public static final float SPLASH_SCREEN_TIME = 0.2f;
 
+    public static final Integer INITIAL_POOL_SIZE = 1000;
+
 }

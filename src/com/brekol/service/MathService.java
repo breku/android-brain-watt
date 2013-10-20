@@ -14,7 +14,7 @@ public class MathService extends BaseService {
 
     private Random random = new Random();
 
-    public String getMathEquation(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
+    public MathEquation getMathEquation(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
 
         // 60% for correct equation
         boolean correctEquation = (random.nextInt(100) + 1) > 40;
@@ -25,46 +25,43 @@ public class MathService extends BaseService {
             result = makeResultIncorrectFor(result);
         }
 
-        return result.toString();
+        return result;
 
     }
 
     private MathEquation makeResultIncorrectFor(MathEquation mathEquation) {
         while (mathEquation.isCorrect()) {
-            mathEquation.setY(random.nextInt(mathEquation.getY()));
+            if (mathEquation.getY() == 0) {
+                mathEquation.setY(1);
+                return mathEquation;
+            } else {
+
+            }
+            mathEquation.setY(random.nextInt(Math.abs(mathEquation.getY())));
         }
         return mathEquation;
     }
 
     private MathEquation getCorrectResultFor(MathParameter mathParameter, LevelDifficulty levelDifficulty) {
-        MathEquation mathEquation = null;
         switch (mathParameter) {
             case ADD:
-                mathEquation.setMathParameter(MathParameter.ADD);
-                return getAddResult(levelDifficulty);
+                return getAddResult(levelDifficulty, mathParameter);
             case SUB:
-                mathEquation.setMathParameter(MathParameter.SUB);
-                return getSubResult(levelDifficulty);
+                return getSubResult(levelDifficulty, mathParameter);
             case MUL:
-                mathEquation.setMathParameter(MathParameter.MUL);
-                return getMulResult(levelDifficulty);
+                return getMulResult(levelDifficulty, mathParameter);
             case DIV:
-                mathEquation.setMathParameter(MathParameter.DIV);
-                return getDivResult(levelDifficulty);
+                return getDivResult(levelDifficulty, mathParameter);
             case ALL:
                 switch (random.nextInt(4)) {
                     case 0:
-                        mathEquation.setMathParameter(MathParameter.ADD);
-                        return getAddResult(levelDifficulty);
+                        return getAddResult(levelDifficulty, mathParameter);
                     case 1:
-                        mathEquation.setMathParameter(MathParameter.SUB);
-                        return getSubResult(levelDifficulty);
+                        return getSubResult(levelDifficulty, mathParameter);
                     case 2:
-                        mathEquation.setMathParameter(MathParameter.MUL);
-                        return getMulResult(levelDifficulty);
+                        return getMulResult(levelDifficulty, mathParameter);
                     case 3:
-                        mathEquation.setMathParameter(MathParameter.DIV);
-                        return getDivResult(levelDifficulty);
+                        return getDivResult(levelDifficulty, mathParameter);
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -73,8 +70,9 @@ public class MathService extends BaseService {
         }
     }
 
-    public MathEquation getAddResult(LevelDifficulty levelDifficulty) {
+    public MathEquation getAddResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
+        mathEquation.setMathParameter(mathParameter);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize()) {
@@ -93,8 +91,9 @@ public class MathService extends BaseService {
         return mathEquation;
     }
 
-    public MathEquation getSubResult(LevelDifficulty levelDifficulty) {
+    public MathEquation getSubResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
+        mathEquation.setMathParameter(mathParameter);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize()) {
@@ -115,8 +114,9 @@ public class MathService extends BaseService {
 
     }
 
-    public MathEquation getMulResult(LevelDifficulty levelDifficulty) {
+    public MathEquation getMulResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
+        mathEquation.setMathParameter(mathParameter);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize()) {
@@ -137,8 +137,9 @@ public class MathService extends BaseService {
 
     }
 
-    public MathEquation getDivResult(LevelDifficulty levelDifficulty) {
+    public MathEquation getDivResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
+        mathEquation.setMathParameter(mathParameter);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize() ||
