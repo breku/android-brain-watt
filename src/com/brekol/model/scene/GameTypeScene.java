@@ -40,17 +40,17 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.addMenuItem(new GameTypeMenuItem(4, LevelDifficulty.EASY, MathParameter.DIV, 500, 300));
         menuScene.addMenuItem(new GameTypeMenuItem(5, LevelDifficulty.EASY, MathParameter.ALL, 600, 300));
 
-        menuScene.addMenuItem(new GameTypeMenuItem(6, LevelDifficulty.EASY, MathParameter.ADD, 200, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(7, LevelDifficulty.EASY, MathParameter.SUB, 300, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(8, LevelDifficulty.EASY, MathParameter.MUL, 400, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(9, LevelDifficulty.EASY, MathParameter.DIV, 500, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(10, LevelDifficulty.EASY, MathParameter.ALL, 600, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(6, LevelDifficulty.MEDIUM, MathParameter.ADD, 200, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(7, LevelDifficulty.MEDIUM, MathParameter.SUB, 300, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(8, LevelDifficulty.MEDIUM, MathParameter.MUL, 400, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(9, LevelDifficulty.MEDIUM, MathParameter.DIV, 500, 200));
+        menuScene.addMenuItem(new GameTypeMenuItem(10, LevelDifficulty.MEDIUM, MathParameter.ALL, 600, 200));
 
-        menuScene.addMenuItem(new GameTypeMenuItem(11, LevelDifficulty.EASY, MathParameter.ADD, 200, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(12, LevelDifficulty.EASY, MathParameter.SUB, 300, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(13, LevelDifficulty.EASY, MathParameter.MUL, 400, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(14, LevelDifficulty.EASY, MathParameter.DIV, 500, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(15, LevelDifficulty.EASY, MathParameter.ALL, 600, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(11, LevelDifficulty.HARD, MathParameter.ADD, 200, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(12, LevelDifficulty.HARD, MathParameter.SUB, 300, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(13, LevelDifficulty.HARD, MathParameter.MUL, 400, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(14, LevelDifficulty.HARD, MathParameter.DIV, 500, 100));
+        menuScene.addMenuItem(new GameTypeMenuItem(15, LevelDifficulty.HARD, MathParameter.ALL, 600, 100));
 
 
         menuScene.setOnMenuItemClickListener(this);

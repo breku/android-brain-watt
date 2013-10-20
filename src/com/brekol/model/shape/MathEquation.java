@@ -23,7 +23,7 @@ public class MathEquation {
             case MUL:
                 return x * y == result;
             case DIV:
-                return x / y == result && x % y == 0;
+                return y != 0 && x / y == result && x % y == 0;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -65,17 +65,31 @@ public class MathEquation {
     public String toString() {
         switch (mathParameter) {
             case ADD:
-                return x + " + " + y + " = " + result;
+                if (isCorrect()) {
+                    return x + " + " + y + " = " + result;
+                } else {
+                    return x + " + " + y + " = " + result + "    !";
+                }
             case SUB:
-                return x + " - " + y + " = " + result;
+                if (isCorrect()) {
+                    return x + " - " + y + " = " + result;
+                } else {
+                    return x + " - " + y + " = " + result + "    !";
+                }
             case MUL:
-                return x + " * " + y + " = " + result;
+                if (isCorrect()) {
+                    return x + " * " + y + " = " + result;
+                } else {
+                    return x + " * " + y + " = " + result + "    !";
+                }
             case DIV:
-                return x + " / " + y + " = " + result;
+                if (isCorrect()) {
+                    return x + " / " + y + " = " + result;
+                } else {
+                    return x + " / " + y + " = " + result + "    !";
+                }
             default:
                 throw new UnsupportedOperationException();
-
-
         }
     }
 }

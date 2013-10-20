@@ -3,6 +3,7 @@ package com.brekol.service;
 import com.brekol.model.shape.MathEquation;
 import com.brekol.util.LevelDifficulty;
 import com.brekol.util.MathParameter;
+import org.andengine.util.debug.Debug;
 
 import java.util.Random;
 
@@ -20,6 +21,7 @@ public class MathService extends BaseService {
         boolean correctEquation = (random.nextInt(100) + 1) > 40;
 
         MathEquation result = getCorrectResultFor(mathParameter, levelDifficulty);
+        Debug.d(result.toString());
 
         if (!correctEquation) {
             result = makeResultIncorrectFor(result);
@@ -34,8 +36,6 @@ public class MathService extends BaseService {
             if (mathEquation.getY() == 0) {
                 mathEquation.setY(1);
                 return mathEquation;
-            } else {
-
             }
             mathEquation.setY(random.nextInt(Math.abs(mathEquation.getY())));
         }
@@ -53,7 +53,8 @@ public class MathService extends BaseService {
             case DIV:
                 return getDivResult(levelDifficulty, mathParameter);
             case ALL:
-                switch (random.nextInt(4)) {
+                int x = random.nextInt(4);
+                switch (x) {
                     case 0:
                         return getAddResult(levelDifficulty, mathParameter);
                     case 1:
@@ -72,7 +73,7 @@ public class MathService extends BaseService {
 
     public MathEquation getAddResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
-        mathEquation.setMathParameter(mathParameter);
+        mathEquation.setMathParameter(MathParameter.ADD);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize()) {
@@ -93,7 +94,7 @@ public class MathService extends BaseService {
 
     public MathEquation getSubResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
-        mathEquation.setMathParameter(mathParameter);
+        mathEquation.setMathParameter(MathParameter.SUB);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize()) {
@@ -116,7 +117,7 @@ public class MathService extends BaseService {
 
     public MathEquation getMulResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
-        mathEquation.setMathParameter(mathParameter);
+        mathEquation.setMathParameter(MathParameter.MUL);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize()) {
@@ -139,7 +140,7 @@ public class MathService extends BaseService {
 
     public MathEquation getDivResult(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         MathEquation mathEquation = new MathEquation();
-        mathEquation.setMathParameter(mathParameter);
+        mathEquation.setMathParameter(MathParameter.DIV);
 
         if (levelDifficulty.isMinusAllowed()) {
             while (mathEquation.getResult() == null || Math.abs(mathEquation.getResult()) > levelDifficulty.getRandomSeedSize() ||

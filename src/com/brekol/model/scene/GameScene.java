@@ -16,7 +16,6 @@ import org.andengine.entity.modifier.MoveYModifier;
 import org.andengine.entity.sprite.Sprite;
 
 import java.util.ArrayDeque;
-import java.util.Queue;
 
 /**
  * User: Breku
@@ -33,7 +32,8 @@ public class GameScene extends BaseScene {
     private GameButton redButton;
     private GameButton greenButton;
 
-    private Queue<MathEquationText> mathEquationTextQueue;
+    // Head of the queue is on the bottom
+    private ArrayDeque<MathEquationText> mathEquationTextQueue;
 
     /**
      * @param objects objects[0] - GameType
@@ -107,8 +107,8 @@ public class GameScene extends BaseScene {
         attachChild(greenButton);
     }
 
-    private Queue<MathEquationText> getEquationsTexts() {
-        Queue<MathEquationText> result = new ArrayDeque<MathEquationText>();
+    private ArrayDeque<MathEquationText> getEquationsTexts() {
+        ArrayDeque<MathEquationText> result = new ArrayDeque<MathEquationText>();
         for (IEntity entity : mChildren) {
             if (entity instanceof MathEquationText) {
                 result.add((MathEquationText) entity);
@@ -122,12 +122,30 @@ public class GameScene extends BaseScene {
     protected void onManagedUpdate(float pSecondsElapsed) {
         if (greenButton.isClicked()) {
             greenButton.clearState();
-
-            for (MathEquationText text : mathEquationTextQueue) {
-                text.registerEntityModifier(new MoveYModifier(ConstantsUtil.TEXT_MOVE_TIME, text.getY(), text.getY() + 80));
-            }
+            moveAllElements();
+            removeBottomElement();
+            addNewTopElement();
         }
         super.onManagedUpdate(pSecondsElapsed);
+    }
+
+    private void moveAllElements() {
+        // Starts from head - bottom
+        for (MathEquationText text : mathEquationTextQueue) {
+            text.registerEntityModifier(new MoveYModifier(ConstantsUtil.TEXT_MOVE_TIME, text.getY(), text.getY() - 80));
+        }
+    }
+
+    private void removeBottomElement() {
+        MathEquationText bottomElement = mathEquationTextQueue.poll();
+        detachChild(bottomElement);
+    }
+
+    private void addNewTopElement() {
+        MathEquationText text = new MathEquationText(400, 500, pool.obtainPoolItem());
+        text.registerEntityModifier(new MoveYModifier(ConstantsUtil.TEXT_MOVE_TIME, text.getY(), text.getY() - 80));
+        mathEquationTextQueue.add(text);
+        attachChild(text);
     }
 
     @Override
