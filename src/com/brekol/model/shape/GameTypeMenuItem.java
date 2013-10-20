@@ -8,7 +8,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 
 /**
  * User: Breku
- * Date: 18.10.13
+ * Date: 20.10.13
  */
 public class GameTypeMenuItem extends ScaleMenuItemDecorator {
 
@@ -31,3 +31,4 @@ public class GameTypeMenuItem extends ScaleMenuItemDecorator {
         return mathParameter;
     }
 }
+
