@@ -68,25 +68,25 @@ public class MathEquation {
                 if (isCorrect()) {
                     return x + " + " + y + " = " + result;
                 } else {
-                    return x + " + " + y + " = " + result + "    !";
+                    return x + " + " + y + " = " + result + "          !";
                 }
             case SUB:
                 if (isCorrect()) {
                     return x + " - " + y + " = " + result;
                 } else {
-                    return x + " - " + y + " = " + result + "    !";
+                    return x + " - " + y + " = " + result + "          !";
                 }
             case MUL:
                 if (isCorrect()) {
                     return x + " * " + y + " = " + result;
                 } else {
-                    return x + " * " + y + " = " + result + "    !";
+                    return x + " * " + y + " = " + result + "          !";
                 }
             case DIV:
                 if (isCorrect()) {
                     return x + " / " + y + " = " + result;
                 } else {
-                    return x + " / " + y + " = " + result + "    !";
+                    return x + " / " + y + " = " + result + "          !";
                 }
             default:
                 throw new UnsupportedOperationException();
