@@ -17,4 +17,6 @@ public class ConstantsUtil implements Constants, LevelConstants {
 
     public static final Integer INITIAL_POOL_SIZE = 1000;
 
+    public static final float TEXT_MOVE_TIME = 0.5f;
+
 }
