@@ -18,6 +18,7 @@ import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.MoveByModifier;
 import org.andengine.entity.modifier.MoveYModifier;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 
 import java.util.ArrayDeque;
 
@@ -37,8 +38,14 @@ public class GameScene extends BaseScene {
     private GameButton greenButton;
     private LifeBar lifeBar;
 
+    private Text textNumberOfGoodClicks;
+    private Text textNumberOfWrongClicks;
+
     // Head of the queue is on the bottom
     private ArrayDeque<MathEquationText> mathEquationTextQueue;
+
+    private Integer numberOfGoodClicks;
+    private Integer numberOfWrongClicks;
 
     /**
      * @param objects objects[0] - GameType
@@ -65,6 +72,9 @@ public class GameScene extends BaseScene {
     private void init(Object... objects) {
         clearUpdateHandlers();
         clearTouchAreas();
+
+        numberOfGoodClicks = 0;
+        numberOfWrongClicks = 0;
 
         levelDifficulty = (LevelDifficulty) objects[0];
         mathParameter = (MathParameter) objects[1];
@@ -93,12 +103,28 @@ public class GameScene extends BaseScene {
         createGreenButton();
         createRedButton();
         createLifeBar();
+        createScoreTexts();
+    }
+
+    private void createScoreTexts() {
+        Text textGoodClicks = new Text(700, 380, ResourcesManager.getInstance().getBlackFont(), "Good clicks:", vertexBufferObjectManager);
+        Text textWrongClicks = new Text(100, 380, ResourcesManager.getInstance().getBlackFont(), "Wrong clicks:", vertexBufferObjectManager);
+
+        textNumberOfGoodClicks = new Text(700, 320, ResourcesManager.getInstance().getBlackFont(), "0000", vertexBufferObjectManager);
+        textNumberOfWrongClicks = new Text(100, 320, ResourcesManager.getInstance().getBlackFont(), "0000", vertexBufferObjectManager);
+        textNumberOfGoodClicks.setText("0");
+        textNumberOfWrongClicks.setText("0");
+
+        attachChild(textGoodClicks);
+        attachChild(textWrongClicks);
+        attachChild(textNumberOfGoodClicks);
+        attachChild(textNumberOfWrongClicks);
     }
 
     private void createLifeBar() {
         lifeBar = new LifeBar();
         lifeBar.registerEntityModifier(new LoopEntityModifier(
-                new MoveByModifier(1.0f, -10.0f, 0)
+                new MoveByModifier(1.0f, levelDifficulty.getLifeBarSpeed(), 0)
         ));
 
         attachChild(lifeBar);
@@ -112,13 +138,13 @@ public class GameScene extends BaseScene {
     }
 
     private void createRedButton() {
-        redButton = new GameButton(100, 200, ResourcesManager.getInstance().getButtonNoTextureRegion());
+        redButton = new GameButton(100, 100, ResourcesManager.getInstance().getButtonNoTextureRegion());
         registerTouchArea(redButton);
         attachChild(redButton);
     }
 
     private void createGreenButton() {
-        greenButton = new GameButton(700, 200, ResourcesManager.getInstance().getButtonOkTextureRegion());
+        greenButton = new GameButton(700, 100, ResourcesManager.getInstance().getButtonOkTextureRegion());
         registerTouchArea(greenButton);
         attachChild(greenButton);
     }
@@ -141,8 +167,10 @@ public class GameScene extends BaseScene {
             MathEquation mathEquation = mathEquationTextQueue.peek().getMathEquation();
             if (mathEquation.isCorrect()) {
                 lifeBar.goodClick();
+                addToGoodClicks();
             } else {
                 lifeBar.wrongClick();
+                addToWrongClicks();
             }
             manageElementsAfterClick();
         }
@@ -151,8 +179,10 @@ public class GameScene extends BaseScene {
             MathEquation mathEquation = mathEquationTextQueue.peek().getMathEquation();
             if (mathEquation.isCorrect()) {
                 lifeBar.wrongClick();
+                addToWrongClicks();
             } else {
                 lifeBar.goodClick();
+                addToGoodClicks();
             }
 
             manageElementsAfterClick();
@@ -199,5 +229,15 @@ public class GameScene extends BaseScene {
         camera.setHUD(null);
         camera.setCenter(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2);
         camera.setChaseEntity(null);
+    }
+
+    private void addToGoodClicks() {
+        numberOfGoodClicks++;
+        textNumberOfGoodClicks.setText(numberOfGoodClicks.toString());
+    }
+
+    private void addToWrongClicks() {
+        numberOfWrongClicks++;
+        textNumberOfWrongClicks.setText(numberOfWrongClicks.toString());
     }
 }

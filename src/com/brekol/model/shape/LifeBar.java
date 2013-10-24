@@ -23,6 +23,8 @@ public class LifeBar extends Rectangle {
     public LifeBar() {
         super(ConstantsUtil.SCREEN_WIDTH / 2, 450, 800, 60, ResourcesManager.getInstance().getVertexBufferObjectManager());
         setColor(standardGreenColor);
+
+        // TODO - set on -1
         setZIndex(1);
 
     }

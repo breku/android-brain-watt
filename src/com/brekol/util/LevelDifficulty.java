@@ -5,16 +5,18 @@ package com.brekol.util;
  * Date: 18.10.13
  */
 public enum LevelDifficulty {
-    EASY(20, false),
-    MEDIUM(100, false),
-    HARD(100, true);
+    EASY(20, false, -15.0f),
+    MEDIUM(100, false, -15.0f),
+    HARD(100, true, -20.0f);
 
     private Integer randomSeedSize;
     private Boolean minusAllowed;
+    private float lifeBarSpeed;
 
-    private LevelDifficulty(Integer randomSeedSize, Boolean minusAllowed) {
+    private LevelDifficulty(Integer randomSeedSize, Boolean minusAllowed, float lifeBarSpeed) {
         this.randomSeedSize = randomSeedSize;
         this.minusAllowed = minusAllowed;
+        this.lifeBarSpeed = lifeBarSpeed;
     }
 
     public Integer getRandomSeedSize() {
@@ -23,5 +25,9 @@ public enum LevelDifficulty {
 
     public Boolean isMinusAllowed() {
         return minusAllowed;
+    }
+
+    public float getLifeBarSpeed() {
+        return lifeBarSpeed;
     }
 }

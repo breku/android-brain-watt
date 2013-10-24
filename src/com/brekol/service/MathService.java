@@ -31,6 +31,12 @@ public class MathService extends BaseService {
 
     }
 
+    /**
+     * Might change 0 / 1 = 0 for 0 / 0 = 0
+     *
+     * @param mathEquation
+     * @return
+     */
     private MathEquation makeResultIncorrectFor(MathEquation mathEquation) {
         while (mathEquation.isCorrect()) {
             if (mathEquation.getY() == 0) {
