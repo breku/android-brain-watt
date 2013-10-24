@@ -4,6 +4,8 @@ import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
 import com.brekol.matcher.ClassTouchAreaMacher;
 import com.brekol.model.shape.GameButton;
+import com.brekol.model.shape.LifeBar;
+import com.brekol.model.shape.MathEquation;
 import com.brekol.model.shape.MathEquationText;
 import com.brekol.pool.MathEquationPool;
 import com.brekol.util.ConstantsUtil;
@@ -12,6 +14,8 @@ import com.brekol.util.MathParameter;
 import com.brekol.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.MoveByModifier;
 import org.andengine.entity.modifier.MoveYModifier;
 import org.andengine.entity.sprite.Sprite;
 
@@ -31,6 +35,7 @@ public class GameScene extends BaseScene {
 
     private GameButton redButton;
     private GameButton greenButton;
+    private LifeBar lifeBar;
 
     // Head of the queue is on the bottom
     private ArrayDeque<MathEquationText> mathEquationTextQueue;
@@ -87,22 +92,33 @@ public class GameScene extends BaseScene {
         createInitialEquations();
         createGreenButton();
         createRedButton();
+        createLifeBar();
+    }
+
+    private void createLifeBar() {
+        lifeBar = new LifeBar();
+        lifeBar.registerEntityModifier(new LoopEntityModifier(
+                new MoveByModifier(1.0f, -10.0f, 0)
+        ));
+
+        attachChild(lifeBar);
+
     }
 
     private void createInitialEquations() {
-        for (int i = 0; i < 5; i++) {
-            attachChild(new MathEquationText(400, i * 80 + 100, pool.obtainPoolItem()));
+        for (int i = 0; i < 4; i++) {
+            attachChild(new MathEquationText(400, i * 80 + 140, pool.obtainPoolItem()));
         }
     }
 
     private void createRedButton() {
-        redButton = new GameButton(100, 100, ResourcesManager.getInstance().getButtonNoTextureRegion());
+        redButton = new GameButton(100, 200, ResourcesManager.getInstance().getButtonNoTextureRegion());
         registerTouchArea(redButton);
         attachChild(redButton);
     }
 
     private void createGreenButton() {
-        greenButton = new GameButton(700, 100, ResourcesManager.getInstance().getButtonOkTextureRegion());
+        greenButton = new GameButton(700, 200, ResourcesManager.getInstance().getButtonOkTextureRegion());
         registerTouchArea(greenButton);
         attachChild(greenButton);
     }
@@ -122,11 +138,35 @@ public class GameScene extends BaseScene {
     protected void onManagedUpdate(float pSecondsElapsed) {
         if (greenButton.isClicked()) {
             greenButton.clearState();
-            moveAllElements();
-            removeBottomElement();
-            addNewTopElement();
+            MathEquation mathEquation = mathEquationTextQueue.peek().getMathEquation();
+            if (mathEquation.isCorrect()) {
+                lifeBar.goodClick();
+            } else {
+                lifeBar.wrongClick();
+            }
+            manageElementsAfterClick();
         }
+        if (redButton.isClicked()) {
+            redButton.clearState();
+            MathEquation mathEquation = mathEquationTextQueue.peek().getMathEquation();
+            if (mathEquation.isCorrect()) {
+                lifeBar.wrongClick();
+            } else {
+                lifeBar.goodClick();
+            }
+
+            manageElementsAfterClick();
+
+        }
+
         super.onManagedUpdate(pSecondsElapsed);
+    }
+
+    private void manageElementsAfterClick() {
+        moveAllElements();
+        removeBottomElement();
+        addNewTopElement();
+        sortChildren();
     }
 
     private void moveAllElements() {
@@ -142,7 +182,7 @@ public class GameScene extends BaseScene {
     }
 
     private void addNewTopElement() {
-        MathEquationText text = new MathEquationText(400, 500, pool.obtainPoolItem());
+        MathEquationText text = new MathEquationText(400, 460, pool.obtainPoolItem());
         text.registerEntityModifier(new MoveYModifier(ConstantsUtil.TEXT_MOVE_TIME, text.getY(), text.getY() - 80));
         mathEquationTextQueue.add(text);
         attachChild(text);

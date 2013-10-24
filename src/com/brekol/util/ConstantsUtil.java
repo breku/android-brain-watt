@@ -18,8 +18,14 @@ public class ConstantsUtil implements Constants, LevelConstants {
     /**
      * Number of mathematical equations, which are initialized on the beginning
      */
-    public static final Integer INITIAL_POOL_SIZE = 2000;
+    public static final Integer INITIAL_POOL_SIZE = 10;
 
     public static final float TEXT_MOVE_TIME = 0.1f;
+
+    public static final float LIFE_BAR_COLOR_CHANGE_TIME = 0.2f;
+
+    public static final float LIFE_BAR_AMOUNT_OF_GOOD_PIXES = 5.0f;
+    public static final float LIFE_BAR_AMOUNT_OF_WRONG_PIXES = 20.0f;
+
 
 }

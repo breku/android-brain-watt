@@ -17,8 +17,8 @@ public class MathService extends BaseService {
 
     public MathEquation getMathEquation(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
 
-        // 60% for correct equation
-        boolean correctEquation = (random.nextInt(100) + 1) > 40;
+        // 50% for correct equation
+        boolean correctEquation = (random.nextInt(100) + 1) > 50;
 
         MathEquation result = getCorrectResultFor(mathParameter, levelDifficulty);
         Debug.d(result.toString());
