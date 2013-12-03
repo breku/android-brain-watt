@@ -48,7 +48,8 @@ public class GameScene extends BaseScene {
     private Integer numberOfWrongClicks;
 
     /**
-     * @param objects objects[0] - GameType
+     * @param objects objects[0] - levelDifficulty
+     *                objects[1] - mathParameter
      */
     public GameScene(Object... objects) {
         super(objects);
@@ -184,12 +185,22 @@ public class GameScene extends BaseScene {
                 lifeBar.goodClick();
                 addToGoodClicks();
             }
-
             manageElementsAfterClick();
-
         }
+        updateLifeBar();
 
         super.onManagedUpdate(pSecondsElapsed);
+    }
+
+    private void updateLifeBar() {
+        if (lifeBar.isEnd()) {
+            endGame();
+        }
+
+    }
+
+    private void endGame() {
+        SceneManager.getInstance().loadEndGameScene();
     }
 
     private void manageElementsAfterClick() {

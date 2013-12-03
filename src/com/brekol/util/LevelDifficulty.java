@@ -7,7 +7,7 @@ package com.brekol.util;
 public enum LevelDifficulty {
     EASY(20, false, -15.0f),
     MEDIUM(100, false, -15.0f),
-    HARD(100, true, -20.0f);
+    HARD(100, true, -100.0f);
 
     private Integer randomSeedSize;
     private Boolean minusAllowed;

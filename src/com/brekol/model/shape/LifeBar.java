@@ -62,4 +62,11 @@ public class LifeBar extends Rectangle {
         registerEntityModifier(colorModifier);
 
     }
+
+    public boolean isEnd() {
+        if (getX() < -1 * ConstantsUtil.SCREEN_WIDTH / 2) {
+            return true;
+        }
+        return false;
+    }
 }
