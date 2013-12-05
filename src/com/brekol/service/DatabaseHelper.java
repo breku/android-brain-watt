@@ -106,4 +106,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Integer getHighScoresFor(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
+        Integer result = null;
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT " + COLUMN_SCORE + " FROM " + TABLE_NAME + " WHERE " + COLUMN_LEVEL_DIFFICULTY + " = ? AND " + COLUMN_MATH_PARAMETER + " = ?",
+                new String[]{levelDifficulty.name(), mathParameter.name()});
+        while (cursor.moveToNext()) {
+            result = cursor.getInt(0);
+        }
+        cursor.close();
+        database.close();
+        return result;
+    }
 }
