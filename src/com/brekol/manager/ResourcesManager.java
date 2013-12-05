@@ -50,7 +50,7 @@ public class ResourcesManager {
             buttonOptionsTextureRegion, menuBackgroundTextureRegion;
 
     // Help
-    private ITextureRegion aboutTextureRegion, aboutBackgroundTextureRegion;
+    private ITextureRegion aboutBackgroundTextureRegion;
 
     // Options
     private ITextureRegion optionsBackgroundTextureRegion, optionsTextureRegion;
@@ -63,7 +63,9 @@ public class ResourcesManager {
 
     // Game Type
     private ITextureRegion buttonAddTextureRegion, buttonSubTextureRegion, buttonMulTextureRegion, buttonDivTextureRegion,
-            backgroundGameTypeTextureRegion, buttonAllTextureRegion;
+            backgroundGameTypeTextureRegion, buttonAllTextureRegion, starGoldTextureRegion, starWhiteTextureRegion,
+            awesomeTextureRegion, lockTextureRegion, playButtonTextureRegion;
+
 
     private List<Sound> winSoundList;
     private List<Sound> loseSoundList;
@@ -124,8 +126,14 @@ public class ResourcesManager {
         buttonDivTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "div.png");
         buttonAllTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "all.png");
 
+        starGoldTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "goldStar.png");
+        starWhiteTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "whiteStar.png");
+        awesomeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "awesome.png");
+        lockTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "lock.png");
+        playButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "playButton.png");
+
         try {
-            gameTypeTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
+            gameTypeTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(1, 1, 1));
             gameTypeTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             e.printStackTrace();
@@ -191,7 +199,6 @@ public class ResourcesManager {
         aboutTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 
         aboutBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(aboutTextureAtlas, activity, "background.jpg");
-        aboutTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(aboutTextureAtlas, activity, "about.png");
 
         try {
             aboutTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
@@ -405,10 +412,6 @@ public class ResourcesManager {
         return menuBackgroundTextureRegion;
     }
 
-    public ITextureRegion getAboutTextureRegion() {
-        return aboutTextureRegion;
-    }
-
     public ITextureRegion getAboutBackgroundTextureRegion() {
         return aboutBackgroundTextureRegion;
     }
@@ -469,4 +472,23 @@ public class ResourcesManager {
         return buttonOkTextureRegion;
     }
 
+    public ITextureRegion getStarGoldTextureRegion() {
+        return starGoldTextureRegion;
+    }
+
+    public ITextureRegion getStarWhiteTextureRegion() {
+        return starWhiteTextureRegion;
+    }
+
+    public ITextureRegion getAwesomeTextureRegion() {
+        return awesomeTextureRegion;
+    }
+
+    public ITextureRegion getLockTextureRegion() {
+        return lockTextureRegion;
+    }
+
+    public ITextureRegion getPlayButtonTextureRegion() {
+        return playButtonTextureRegion;
+    }
 }

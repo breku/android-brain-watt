@@ -20,7 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_LEVEL_DIFFICULTY = "LEVEL_DIFFICULTY";
     private static final String COLUMN_MATH_PARAMETER = "MATH_PARAMETER";
     private static final String COLUMN_SCORE = "SCORE";
-    private static final int DATABASE_VERSION = 19;
+    private static final String COLUMN_LOCKED = "LOCKED";
+    private static final int DATABASE_VERSION = 23;
 
 
     public DatabaseHelper(Context context) {
@@ -38,7 +39,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "LEVEL_DIFFICULTY TEXT, " +
                 "MATH_PARAMETER TEXT, " +
-                "SCORE TEXT " +
+                "SCORE INTEGER, " +
+                "LOCKED INTEGER" +
                 ")");
         createDefaultHighScoreValues(sqLiteDatabase);
     }
@@ -77,31 +79,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void createDefaultHighScoreValues(SQLiteDatabase sqLiteDatabase) {
 
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.ADD);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.SUB);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.MUL);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.DIV);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.ALL);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.ADD, 0);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.SUB, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.MUL, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.DIV, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.EASY, MathParameter.ALL, 1);
 
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.ADD);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.SUB);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.MUL);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.DIV);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.ALL);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.ADD, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.SUB, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.MUL, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.DIV, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.MEDIUM, MathParameter.ALL, 1);
 
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.ADD);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.SUB);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.MUL);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.DIV);
-        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.ALL);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.ADD, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.SUB, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.MUL, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.DIV, 1);
+        createDefaultHighScoreRecord(sqLiteDatabase, LevelDifficulty.HARD, MathParameter.ALL, 1);
     }
 
-    private void createDefaultHighScoreRecord(SQLiteDatabase sqLiteDatabase, LevelDifficulty levelDifficulty, MathParameter mathParameter) {
+    private void createDefaultHighScoreRecord(SQLiteDatabase sqLiteDatabase, LevelDifficulty levelDifficulty, MathParameter mathParameter, Integer locked) {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COLUMN_LEVEL_DIFFICULTY, levelDifficulty.name());
         contentValues.put(COLUMN_MATH_PARAMETER, mathParameter.name());
         contentValues.put(COLUMN_SCORE, 0);
+        contentValues.put(COLUMN_LOCKED, locked);
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
     }
@@ -129,9 +132,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    // TODO replace for update
     public void removeScoreFor(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL("DELETE FROM HIGH_SCORES WHERE LEVEL_DIFFICULTY = ? AND MATH_PARAMETER = ?", new String[]{levelDifficulty.name(), mathParameter.name()});
         database.close();
+    }
+
+    public void unlockLevel(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("UPDATE HIGH_SCORES SET LOCKED = 0 WHERE LEVEL_DIFFICULTY = ? AND MATH_PARAMETER = ?", new String[]{levelDifficulty.name(), mathParameter.name()});
+        database.close();
+    }
+
+    public boolean isLevelUnlocked(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
+        Integer result = null;
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT " + COLUMN_LOCKED + " FROM " + TABLE_NAME + " WHERE " + COLUMN_LEVEL_DIFFICULTY + " = ? AND " + COLUMN_MATH_PARAMETER + " = ?",
+                new String[]{levelDifficulty.name(), mathParameter.name()});
+        while (cursor.moveToNext()) {
+            result = cursor.getInt(0);
+        }
+        cursor.close();
+        database.close();
+        return result == 0;
     }
 }

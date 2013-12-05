@@ -2,6 +2,7 @@ package com.brekol.model.scene;
 
 import com.brekol.manager.SceneManager;
 import com.brekol.model.shape.GameTypeMenuItem;
+import com.brekol.service.HighScoreService;
 import com.brekol.util.ConstantsUtil;
 import com.brekol.util.LevelDifficulty;
 import com.brekol.util.MathParameter;
@@ -17,11 +18,17 @@ import org.andengine.entity.sprite.Sprite;
 public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemClickListener {
 
     private MenuScene menuScene;
+    private HighScoreService highScoreService;
 
     @Override
     public void createScene(Object... objects) {
+        init();
         createBackground();
         createButtons();
+    }
+
+    private void init() {
+        highScoreService = new HighScoreService();
     }
 
     private void createBackground() {
@@ -34,24 +41,26 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.setBackgroundEnabled(false);
         menuScene.buildAnimations();
 
-        menuScene.addMenuItem(new GameTypeMenuItem(1, LevelDifficulty.EASY, MathParameter.ADD, 200, 300));
-        menuScene.addMenuItem(new GameTypeMenuItem(2, LevelDifficulty.EASY, MathParameter.SUB, 300, 300));
-        menuScene.addMenuItem(new GameTypeMenuItem(3, LevelDifficulty.EASY, MathParameter.MUL, 400, 300));
-        menuScene.addMenuItem(new GameTypeMenuItem(4, LevelDifficulty.EASY, MathParameter.DIV, 500, 300));
-        menuScene.addMenuItem(new GameTypeMenuItem(5, LevelDifficulty.EASY, MathParameter.ALL, 600, 300));
 
-        menuScene.addMenuItem(new GameTypeMenuItem(6, LevelDifficulty.MEDIUM, MathParameter.ADD, 200, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(7, LevelDifficulty.MEDIUM, MathParameter.SUB, 300, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(8, LevelDifficulty.MEDIUM, MathParameter.MUL, 400, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(9, LevelDifficulty.MEDIUM, MathParameter.DIV, 500, 200));
-        menuScene.addMenuItem(new GameTypeMenuItem(10, LevelDifficulty.MEDIUM, MathParameter.ALL, 600, 200));
+        Integer scorePositionX = 210;
+        Integer scorePositionY = 400;
+        Integer gameTypeMenuItemID = 1;
+        for (LevelDifficulty levelDifficulty : LevelDifficulty.values()) {
+            scorePositionY = 400;
+            for (MathParameter mathParameter : MathParameter.values()) {
 
-        menuScene.addMenuItem(new GameTypeMenuItem(11, LevelDifficulty.HARD, MathParameter.ADD, 200, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(12, LevelDifficulty.HARD, MathParameter.SUB, 300, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(13, LevelDifficulty.HARD, MathParameter.MUL, 400, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(14, LevelDifficulty.HARD, MathParameter.DIV, 500, 100));
-        menuScene.addMenuItem(new GameTypeMenuItem(15, LevelDifficulty.HARD, MathParameter.ALL, 600, 100));
+                if (highScoreService.isLevelUnlocked(levelDifficulty, mathParameter)) {
+                    menuScene.addMenuItem(new GameTypeMenuItem(gameTypeMenuItemID++, levelDifficulty, mathParameter, scorePositionX, scorePositionY + 10));
+                    createStars(scorePositionX, scorePositionY - 15, levelDifficulty, mathParameter);
+                } else {
+                    // Lock
+                    attachChild(new Sprite(scorePositionX, scorePositionY - 10, resourcesManager.getLockTextureRegion(), vertexBufferObjectManager));
+                }
 
+                scorePositionY -= 85;
+            }
+            scorePositionX += 240;
+        }
 
         menuScene.setOnMenuItemClickListener(this);
 
@@ -59,6 +68,49 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
     }
 
+    private void createStars(Integer positionX, Integer positionY, LevelDifficulty levelDifficulty, MathParameter mathParameter) {
+        Integer score = highScoreService.getHighScoresFor(levelDifficulty, mathParameter);
+        final int STAR_STRIDE = 25;
+
+        if (score < 30) {
+            // 0 Gold stars
+
+            attachChild(new Sprite(positionX - STAR_STRIDE, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX + STAR_STRIDE, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY - 20, resourcesManager.getAwesomeTextureRegion(), vertexBufferObjectManager));
+
+        } else if (score >= 30 && score < 40) {
+            // 1 Gold stars
+
+            attachChild(new Sprite(positionX - STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX + STAR_STRIDE, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
+
+        } else if (score >= 40 && score < 50) {
+            // 2 Gold stars
+
+            attachChild(new Sprite(positionX - STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX + STAR_STRIDE, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
+
+        } else if (score >= 50 && score < 80) {
+            // 3 Gold stars
+
+            attachChild(new Sprite(positionX - STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX + STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+        } else if (score >= 80) {
+            // 3 Gold stars + awesome caption
+
+            attachChild(new Sprite(positionX - STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX + STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY - 25, resourcesManager.getAwesomeTextureRegion(), vertexBufferObjectManager));
+        }
+
+
+    }
 
     @Override
     public void onBackKeyPressed() {
@@ -76,7 +128,11 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
     @Override
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
-        SceneManager.getInstance().loadGameScene(((GameTypeMenuItem) pMenuItem).getLevelDifficulty(), ((GameTypeMenuItem) pMenuItem).getMathParameter());
-        return true;
+        if (highScoreService.isLevelUnlocked(((GameTypeMenuItem) pMenuItem).getLevelDifficulty(), ((GameTypeMenuItem) pMenuItem).getMathParameter())) {
+            SceneManager.getInstance().loadGameScene(((GameTypeMenuItem) pMenuItem).getLevelDifficulty(), ((GameTypeMenuItem) pMenuItem).getMathParameter());
+            return true;
+        }
+        return false;
+
     }
 }

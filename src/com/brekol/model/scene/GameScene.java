@@ -211,6 +211,9 @@ public class GameScene extends BaseScene {
     private void endGameWin() {
         Integer score = numberOfGoodClicks - numberOfWrongClicks;
         highScoreService.createNewRecordFor(levelDifficulty, mathParameter, score);
+        if (score > ConstantsUtil.MINIMUM_SCORE_TO_UNLOCK_LEVEL) {
+            highScoreService.unlockLevelUpFor(levelDifficulty, mathParameter);
+        }
         SceneManager.getInstance().loadHighScoreSceneFrom(SceneType.GAME, score, levelDifficulty, mathParameter);
     }
 

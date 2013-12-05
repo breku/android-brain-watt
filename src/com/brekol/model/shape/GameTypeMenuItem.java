@@ -16,7 +16,7 @@ public class GameTypeMenuItem extends ScaleMenuItemDecorator {
     private MathParameter mathParameter;
 
     public GameTypeMenuItem(Integer ID, LevelDifficulty levelDifficulty, MathParameter mathParameter, Integer positionX, Integer positionY) {
-        super(new SpriteMenuItem(ID, ResourcesManager.getInstance().getTextureFor(mathParameter), ResourcesManager.getInstance().getVertexBufferObjectManager()), 1.5f, 1.0f);
+        super(new SpriteMenuItem(ID, ResourcesManager.getInstance().getPlayButtonTextureRegion(), ResourcesManager.getInstance().getVertexBufferObjectManager()), 1.5f, 1.0f);
         this.levelDifficulty = levelDifficulty;
         this.mathParameter = mathParameter;
         setPosition(positionX, positionY);
