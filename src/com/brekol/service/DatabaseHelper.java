@@ -122,20 +122,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public void saveRecord(LevelDifficulty levelDifficulty, MathParameter mathParameter, Integer score) {
+    public void updateRecordFor(LevelDifficulty levelDifficulty, MathParameter mathParameter, Integer score) {
         SQLiteDatabase database = getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_LEVEL_DIFFICULTY, levelDifficulty.name());
-        contentValues.put(COLUMN_MATH_PARAMETER, mathParameter.name());
-        contentValues.put(COLUMN_SCORE, score);
-        database.insert(TABLE_NAME, null, contentValues);
-        database.close();
-    }
-
-    // TODO replace for update
-    public void removeScoreFor(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
-        SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM HIGH_SCORES WHERE LEVEL_DIFFICULTY = ? AND MATH_PARAMETER = ?", new String[]{levelDifficulty.name(), mathParameter.name()});
+        database.execSQL("UPDATE HIGH_SCORES SET SCORE = ? WHERE LEVEL_DIFFICULTY = ? AND MATH_PARAMETER = ?", new Object[]{score, levelDifficulty.name(), mathParameter.name()});
         database.close();
     }
 

@@ -58,8 +58,8 @@ public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
     }
 
     private void createTableWithAnimatedScore(Integer currentScore, LevelDifficulty currentLevelDifficulty, MathParameter currentMathParameter) {
-        Integer scorePositionX = 220;
-        Integer scorePositionY = 340;
+        Integer scorePositionX = 210;
+        Integer scorePositionY;
         for (LevelDifficulty levelDifficulty : LevelDifficulty.values()) {
             scorePositionY = 380;
             for (MathParameter mathParameter : MathParameter.values()) {
@@ -69,23 +69,23 @@ public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
                     Integer score = highScoreService.getHighScoresFor(levelDifficulty, mathParameter);
                     createScoreItem(scorePositionX, scorePositionY, score);
                 }
-                scorePositionY -= 60;
+                scorePositionY -= 85;
             }
-            scorePositionX += 200;
+            scorePositionX += 240;
         }
     }
 
     private void createNormalTable() {
-        Integer scorePositionX = 220;
-        Integer scorePositionY = 340;
+        Integer scorePositionX = 210;
+        Integer scorePositionY;
         for (LevelDifficulty levelDifficulty : LevelDifficulty.values()) {
             scorePositionY = 380;
             for (MathParameter mathParameter : MathParameter.values()) {
                 Integer score = highScoreService.getHighScoresFor(levelDifficulty, mathParameter);
                 createScoreItem(scorePositionX, scorePositionY, score);
-                scorePositionY -= 60;
+                scorePositionY -= 85;
             }
-            scorePositionX += 200;
+            scorePositionX += 240;
         }
     }
 

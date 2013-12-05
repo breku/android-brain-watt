@@ -23,9 +23,8 @@ public class HighScoreService extends BaseService {
         return false;
     }
 
-    public void createNewRecordFor(LevelDifficulty levelDifficulty, MathParameter mathParameter, Integer score) {
-        databaseHelper.removeScoreFor(levelDifficulty, mathParameter);
-        databaseHelper.saveRecord(levelDifficulty, mathParameter, score);
+    public void updateRecordFor(LevelDifficulty levelDifficulty, MathParameter mathParameter, Integer score) {
+        databaseHelper.updateRecordFor(levelDifficulty, mathParameter, score);
     }
 
     public void unlockLevelUpFor(LevelDifficulty levelDifficulty, MathParameter mathParameter) {

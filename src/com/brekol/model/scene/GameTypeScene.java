@@ -43,10 +43,10 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
 
         Integer scorePositionX = 210;
-        Integer scorePositionY = 400;
+        Integer scorePositionY;
         Integer gameTypeMenuItemID = 1;
         for (LevelDifficulty levelDifficulty : LevelDifficulty.values()) {
-            scorePositionY = 400;
+            scorePositionY = 390;
             for (MathParameter mathParameter : MathParameter.values()) {
 
                 if (highScoreService.isLevelUnlocked(levelDifficulty, mathParameter)) {
@@ -78,7 +78,6 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
             attachChild(new Sprite(positionX - STAR_STRIDE, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
             attachChild(new Sprite(positionX, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
             attachChild(new Sprite(positionX + STAR_STRIDE, positionY, resourcesManager.getStarWhiteTextureRegion(), vertexBufferObjectManager));
-            attachChild(new Sprite(positionX, positionY - 20, resourcesManager.getAwesomeTextureRegion(), vertexBufferObjectManager));
 
         } else if (score >= 30 && score < 40) {
             // 1 Gold stars
