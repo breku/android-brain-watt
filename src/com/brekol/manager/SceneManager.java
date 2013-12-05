@@ -1,10 +1,12 @@
 package com.brekol.manager;
 
+import com.brekol.activity.MyActivity;
 import com.brekol.model.scene.*;
 import com.brekol.util.ConstantsUtil;
 import com.brekol.util.LevelDifficulty;
 import com.brekol.util.MathParameter;
 import com.brekol.util.SceneType;
+import com.google.ads.AdView;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface;
@@ -26,6 +28,29 @@ public class SceneManager {
     }
 
     public void setScene(BaseScene scene) {
+
+        if (scene instanceof GameScene || scene instanceof GameTypeScene || scene instanceof HighScoreScene
+                || scene instanceof AboutScene) {
+            ResourcesManager.getInstance().getActivity().runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ((MyActivity) ResourcesManager.getInstance().getActivity()).getAdView().setVisibility(AdView.INVISIBLE);
+                        }
+                    }
+            );
+        } else {
+            ResourcesManager.getInstance().getActivity().runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ((MyActivity) ResourcesManager.getInstance().getActivity()).getAdView().setVisibility(AdView.VISIBLE);
+                        }
+                    }
+            );
+
+        }
+
         ResourcesManager.getInstance().getEngine().setScene(scene);
         currentScene = scene;
         currentSceneType = scene.getSceneType();
