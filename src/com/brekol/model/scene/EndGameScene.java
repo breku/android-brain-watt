@@ -7,6 +7,7 @@ import com.brekol.util.SceneType;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 
 /**
@@ -15,15 +16,24 @@ import org.andengine.input.touch.TouchEvent;
  */
 public class EndGameScene extends BaseScene implements IOnSceneTouchListener {
 
+    /**
+     * @param objects objects[0] - Integer score
+     */
+    public EndGameScene(Object... objects) {
+        super(objects);
+    }
+
     @Override
     public void createScene(Object... objects) {
-        createBackground();
+        createBackground((Integer) objects[0]);
         setOnSceneTouchListener(this);
     }
 
-    private void createBackground() {
+    private void createBackground(Integer score) {
         attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2,
                 ResourcesManager.getInstance().getEndGameBackgroundTextureRegion(), vertexBufferObjectManager));
+        attachChild(new Text(400, 200, ResourcesManager.getInstance().getBlackFont(),
+                score.toString(), vertexBufferObjectManager));
     }
 
     @Override

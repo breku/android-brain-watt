@@ -122,7 +122,7 @@ public class SceneManager {
         }));
     }
 
-    public void loadHighScoreSceneFrom(SceneType sceneType) {
+    public void loadHighScoreSceneFrom(SceneType sceneType, final Integer score, final LevelDifficulty levelDifficulty, final MathParameter mathParameter) {
         switch (sceneType) {
             case MENU:
                 setScene(loadingScene);
@@ -146,7 +146,7 @@ public class SceneManager {
                     public void onTimePassed(TimerHandler pTimerHandler) {
                         ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                         ResourcesManager.getInstance().loadRecordResources();
-                        recordScene = new HighScoreScene();
+                        recordScene = new HighScoreScene(score, levelDifficulty, mathParameter);
                         setScene(recordScene);
                     }
                 }));
@@ -162,8 +162,8 @@ public class SceneManager {
 
     }
 
-    public void loadEndGameScene() {
-        endGameScene = new EndGameScene();
+    public void loadEndGameScene(Integer score) {
+        endGameScene = new EndGameScene(score);
         setScene(endGameScene);
         gameScene.disposeScene();
         ResourcesManager.getInstance().unloadGameTextures();

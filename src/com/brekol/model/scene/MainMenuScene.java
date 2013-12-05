@@ -95,7 +95,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
             case EXIT:
                 System.exit(0);
             case RECORDS:
-                SceneManager.getInstance().loadHighScoreSceneFrom(SceneType.MENU);
+                SceneManager.getInstance().loadHighScoreSceneFrom(SceneType.MENU, null, null, null);
                 break;
             default:
                 return false;

@@ -35,7 +35,7 @@ public class ResourcesManager {
     private Camera camera;
     private VertexBufferObjectManager vertexBufferObjectManager;
 
-    private BitmapTextureAtlas splashTextureAtlas, menuFontTextureAtlas, gameFontTextureAtlas;
+    private BitmapTextureAtlas splashTextureAtlas, menuFontTextureAtlas, gameFontTextureAtlas, greenFontTextureAtlas;
     private BuildableBitmapTextureAtlas menuTextureAtlas, optionsTextureAtlas, aboutTextureAtlas, endGameTextureAtlas,
             recordTextureAtlas, gameTypeTextureAtlas, gameTextureAtlas;
 
@@ -67,8 +67,7 @@ public class ResourcesManager {
 
     private List<Sound> winSoundList;
     private List<Sound> loseSoundList;
-    private Font whiteFont, blackFont;
-
+    private Font whiteFont, blackFont, greenFont;
 
     public static void prepareManager(Engine engine, BaseGameActivity activity, Camera camera, VertexBufferObjectManager vertexBufferObjectManager) {
         getInstance().engine = engine;
@@ -89,6 +88,7 @@ public class ResourcesManager {
         loadMainMenuGraphics();
         loadWhiteFont();
         loadBlackFont();
+        loadGreenFont();
     }
 
     public void loadGameResources() {
@@ -276,6 +276,17 @@ public class ResourcesManager {
         menuTextureAtlas.load();
     }
 
+    private void loadGreenFont() {
+        if (greenFontTextureAtlas != null) {
+            return;
+        }
+        FontFactory.setAssetBasePath("font/");
+        greenFontTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
+        greenFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), greenFontTextureAtlas, activity.getAssets(), "font1.ttf", 50, true, Color.GREEN, 2, Color.GREEN);
+        greenFontTextureAtlas.load();
+        greenFont.load();
+    }
+
     private void loadBlackFont() {
         if (gameFontTextureAtlas != null) {
             return;
@@ -416,6 +427,10 @@ public class ResourcesManager {
 
     public Font getBlackFont() {
         return blackFont;
+    }
+
+    public Font getGreenFont() {
+        return greenFont;
     }
 
     public ITextureRegion getEndGameBackgroundTextureRegion() {

@@ -99,8 +99,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void createDefaultHighScoreRecord(SQLiteDatabase sqLiteDatabase, LevelDifficulty levelDifficulty, MathParameter mathParameter) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COLUMN_LEVEL_DIFFICULTY, levelDifficulty.toString());
-        contentValues.put(COLUMN_MATH_PARAMETER, mathParameter.toString());
+        contentValues.put(COLUMN_LEVEL_DIFFICULTY, levelDifficulty.name());
+        contentValues.put(COLUMN_MATH_PARAMETER, mathParameter.name());
         contentValues.put(COLUMN_SCORE, 0);
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
@@ -117,5 +117,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return result;
+    }
+
+    public void saveRecord(LevelDifficulty levelDifficulty, MathParameter mathParameter, Integer score) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_LEVEL_DIFFICULTY, levelDifficulty.name());
+        contentValues.put(COLUMN_MATH_PARAMETER, mathParameter.name());
+        contentValues.put(COLUMN_SCORE, score);
+        database.insert(TABLE_NAME, null, contentValues);
+        database.close();
+    }
+
+    public void removeScoreFor(LevelDifficulty levelDifficulty, MathParameter mathParameter) {
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("DELETE FROM HIGH_SCORES WHERE LEVEL_DIFFICULTY = ? AND MATH_PARAMETER = ?", new String[]{levelDifficulty.name(), mathParameter.name()});
+        database.close();
     }
 }

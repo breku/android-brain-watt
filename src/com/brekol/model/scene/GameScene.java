@@ -8,6 +8,7 @@ import com.brekol.model.shape.LifeBar;
 import com.brekol.model.shape.MathEquation;
 import com.brekol.model.shape.MathEquationText;
 import com.brekol.pool.MathEquationPool;
+import com.brekol.service.HighScoreService;
 import com.brekol.util.ConstantsUtil;
 import com.brekol.util.LevelDifficulty;
 import com.brekol.util.MathParameter;
@@ -47,6 +48,8 @@ public class GameScene extends BaseScene {
     private Integer numberOfGoodClicks;
     private Integer numberOfWrongClicks;
 
+    private HighScoreService highScoreService;
+
     /**
      * @param objects objects[0] - levelDifficulty
      *                objects[1] - mathParameter
@@ -82,6 +85,8 @@ public class GameScene extends BaseScene {
 
         pool = new MathEquationPool(levelDifficulty, mathParameter);
         pool.batchAllocatePoolItems(ConstantsUtil.INITIAL_POOL_SIZE);
+
+        highScoreService = new HighScoreService();
 
     }
 
@@ -194,13 +199,24 @@ public class GameScene extends BaseScene {
 
     private void updateLifeBar() {
         if (lifeBar.isEnd()) {
-            endGame();
+            Integer score = numberOfGoodClicks - numberOfWrongClicks;
+            if (highScoreService.isHighScore(levelDifficulty, mathParameter, score)) {
+                endGameWin();
+            } else {
+                endGameLose();
+            }
         }
-
     }
 
-    private void endGame() {
-        SceneManager.getInstance().loadEndGameScene();
+    private void endGameWin() {
+        Integer score = numberOfGoodClicks - numberOfWrongClicks;
+        highScoreService.createNewRecordFor(levelDifficulty, mathParameter, score);
+        SceneManager.getInstance().loadHighScoreSceneFrom(SceneType.GAME, score, levelDifficulty, mathParameter);
+    }
+
+    private void endGameLose() {
+        Integer score = numberOfGoodClicks - numberOfWrongClicks;
+        SceneManager.getInstance().loadEndGameScene(score);
     }
 
     private void manageElementsAfterClick() {
