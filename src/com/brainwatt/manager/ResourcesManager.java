@@ -21,6 +21,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,8 +68,8 @@ public class ResourcesManager {
             awesomeTextureRegion, lockTextureRegion, playButtonTextureRegion;
 
 
-    private List<Sound> winSoundList;
-    private List<Sound> loseSoundList;
+    private List<Sound> winSoundList, loseSoundList, halfWinSoundList;
+    private Sound startGameSound, goodClickSound, wrongClickSound;
     private Font whiteFont, blackFont, greenFont;
 
     public static void prepareManager(Engine engine, BaseGameActivity activity, Camera camera, VertexBufferObjectManager vertexBufferObjectManager) {
@@ -183,10 +184,21 @@ public class ResourcesManager {
         SoundFactory.setAssetBasePath("mfx/other/");
         winSoundList = new ArrayList<Sound>();
         loseSoundList = new ArrayList<Sound>();
+        halfWinSoundList = new ArrayList<Sound>();
         try {
             winSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "win.ogg"));
+
             loseSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "lose.ogg"));
             loseSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "lose1.ogg"));
+
+            halfWinSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "halfwin0.ogg"));
+            halfWinSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "halfwin1.ogg"));
+            halfWinSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "halfwin2.ogg"));
+
+            startGameSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "go.ogg");
+            goodClickSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "goodClick.ogg");
+            wrongClickSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "wrongClick.ogg");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -452,12 +464,19 @@ public class ResourcesManager {
         return backgroundGameTypeTextureRegion;
     }
 
-    public List<Sound> getLoseSoundList() {
-        return loseSoundList;
+    public Sound getWinSound() {
+        Collections.shuffle(winSoundList);
+        return winSoundList.get(0);
     }
 
-    public List<Sound> getWinSoundList() {
-        return winSoundList;
+    public Sound getLoseSound() {
+        Collections.shuffle(loseSoundList);
+        return loseSoundList.get(0);
+    }
+
+    public Sound getHalfWinSound() {
+        Collections.shuffle(halfWinSoundList);
+        return halfWinSoundList.get(0);
     }
 
     public ITextureRegion getBackgroundGameTextureRegion() {
@@ -490,5 +509,17 @@ public class ResourcesManager {
 
     public ITextureRegion getPlayButtonTextureRegion() {
         return playButtonTextureRegion;
+    }
+
+    public Sound getStartGameSound() {
+        return startGameSound;
+    }
+
+    public Sound getGoodClickSound() {
+        return goodClickSound;
+    }
+
+    public Sound getWrongClickSound() {
+        return wrongClickSound;
     }
 }

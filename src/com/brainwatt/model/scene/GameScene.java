@@ -50,6 +50,8 @@ public class GameScene extends BaseScene {
 
     private HighScoreService highScoreService;
 
+    private Integer firstTimeCounter;
+
     /**
      * @param objects objects[0] - levelDifficulty
      *                objects[1] - mathParameter
@@ -79,6 +81,8 @@ public class GameScene extends BaseScene {
 
         numberOfGoodClicks = 0;
         numberOfWrongClicks = 0;
+
+        firstTimeCounter = 0;
 
         levelDifficulty = (LevelDifficulty) objects[0];
         mathParameter = (MathParameter) objects[1];
@@ -174,9 +178,11 @@ public class GameScene extends BaseScene {
             if (mathEquation.isCorrect()) {
                 lifeBar.goodClick();
                 addToGoodClicks();
+                resourcesManager.getGoodClickSound().play();
             } else {
                 lifeBar.wrongClick();
                 addToWrongClicks();
+                resourcesManager.getWrongClickSound().play();
             }
             manageElementsAfterClick();
         }
@@ -186,13 +192,19 @@ public class GameScene extends BaseScene {
             if (mathEquation.isCorrect()) {
                 lifeBar.wrongClick();
                 addToWrongClicks();
+                resourcesManager.getGoodClickSound().play();
             } else {
                 lifeBar.goodClick();
                 addToGoodClicks();
+                resourcesManager.getWrongClickSound().play();
             }
             manageElementsAfterClick();
         }
         updateLifeBar();
+
+        if (firstTimeCounter++ == 1) {
+            resourcesManager.getStartGameSound().play();
+        }
 
         super.onManagedUpdate(pSecondsElapsed);
     }
@@ -202,10 +214,18 @@ public class GameScene extends BaseScene {
             Integer score = numberOfGoodClicks - numberOfWrongClicks;
             if (highScoreService.isHighScore(levelDifficulty, mathParameter, score)) {
                 endGameWin();
+            } else if (score >= ConstantsUtil.MINIMUM_SCORE_TO_UNLOCK_LEVEL) {
+                endGameHalfWin();
             } else {
                 endGameLose();
             }
         }
+    }
+
+    private void endGameHalfWin() {
+        Integer score = numberOfGoodClicks - numberOfWrongClicks;
+        resourcesManager.getHalfWinSound().play();
+        SceneManager.getInstance().loadEndGameScene(score);
     }
 
     private void endGameWin() {
@@ -214,11 +234,13 @@ public class GameScene extends BaseScene {
         if (score > ConstantsUtil.MINIMUM_SCORE_TO_UNLOCK_LEVEL) {
             highScoreService.unlockLevelUpFor(levelDifficulty, mathParameter);
         }
+        resourcesManager.getWinSound().play();
         SceneManager.getInstance().loadHighScoreSceneFrom(SceneType.GAME, score, levelDifficulty, mathParameter);
     }
 
     private void endGameLose() {
         Integer score = numberOfGoodClicks - numberOfWrongClicks;
+        resourcesManager.getLoseSound().play();
         SceneManager.getInstance().loadEndGameScene(score);
     }
 
