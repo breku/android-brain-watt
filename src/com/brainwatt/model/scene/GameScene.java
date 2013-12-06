@@ -192,11 +192,11 @@ public class GameScene extends BaseScene {
             if (mathEquation.isCorrect()) {
                 lifeBar.wrongClick();
                 addToWrongClicks();
-                resourcesManager.getGoodClickSound().play();
+                resourcesManager.getWrongClickSound().play();
             } else {
                 lifeBar.goodClick();
                 addToGoodClicks();
-                resourcesManager.getWrongClickSound().play();
+                resourcesManager.getGoodClickSound().play();
             }
             manageElementsAfterClick();
         }
