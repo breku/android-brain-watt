@@ -313,7 +313,7 @@ public class ResourcesManager {
         }
         FontFactory.setAssetBasePath("font/");
         greenFontTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
-        greenFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), greenFontTextureAtlas, activity.getAssets(), "font1.ttf", 50, true, Color.GREEN, 2, Color.GREEN);
+        greenFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), greenFontTextureAtlas, activity.getAssets(), "ChalkPaint.ttf", 50, true, Color.GREEN, 2, Color.GREEN);
         greenFontTextureAtlas.load();
         greenFont.load();
     }
