@@ -13,7 +13,7 @@ public class MathEquationText extends Text {
 
 
     public MathEquationText(final float pX, final float pY, MathEquation mathEquation) {
-        super(pX, pY, ResourcesManager.getInstance().getBlackFont(), mathEquation.toString(),
+        super(pX, pY, ResourcesManager.getInstance().getWhiteFont(), mathEquation.toString(),
                 ResourcesManager.getInstance().getVertexBufferObjectManager());
         this.mathEquation = mathEquation;
     }

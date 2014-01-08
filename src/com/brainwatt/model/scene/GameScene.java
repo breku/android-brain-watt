@@ -117,11 +117,14 @@ public class GameScene extends BaseScene {
     }
 
     private void createScoreTexts() {
-        Text textGoodClicks = new Text(700, 380, ResourcesManager.getInstance().getBlackFont(), "Good clicks:", vertexBufferObjectManager);
-        Text textWrongClicks = new Text(100, 380, ResourcesManager.getInstance().getBlackFont(), "Wrong clicks:", vertexBufferObjectManager);
+        Text textGoodClicks = new Text(700, 380, ResourcesManager.getInstance().getWhiteFont(), "Good clicks:", vertexBufferObjectManager);
+        Text textWrongClicks = new Text(100, 380, ResourcesManager.getInstance().getWhiteFont(), "Wrong clicks:", vertexBufferObjectManager);
 
-        textNumberOfGoodClicks = new Text(700, 320, ResourcesManager.getInstance().getBlackFont(), "0000", vertexBufferObjectManager);
-        textNumberOfWrongClicks = new Text(100, 320, ResourcesManager.getInstance().getBlackFont(), "0000", vertexBufferObjectManager);
+        textGoodClicks.setScale(0.7f);
+        textWrongClicks.setScale(0.7f);
+
+        textNumberOfGoodClicks = new Text(700, 320, ResourcesManager.getInstance().getWhiteFont(), "0000", vertexBufferObjectManager);
+        textNumberOfWrongClicks = new Text(100, 320, ResourcesManager.getInstance().getWhiteFont(), "0000", vertexBufferObjectManager);
         textNumberOfGoodClicks.setText("0");
         textNumberOfWrongClicks.setText("0");
 

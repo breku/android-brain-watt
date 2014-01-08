@@ -3,9 +3,8 @@ package com.brainwatt.model.scene;
 import com.brainwatt.manager.ResourcesManager;
 import com.brainwatt.util.ConstantsUtil;
 import com.brainwatt.util.SceneType;
-import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.util.adt.color.Color;
 
 /**
  * User: Breku
@@ -15,9 +14,13 @@ public class LoadingScene extends BaseScene {
 
     @Override
     public void createScene(Object... objects) {
-        setBackground(new Background(Color.BLACK));
-        attachChild(new Text(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, ResourcesManager.getInstance().getWhiteFont(),
-                "Loading...", vertexBufferObjectManager));
+        createBackground();
+        attachChild(new Text(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, ResourcesManager.getInstance().getChalkFont(),
+                "loading...", vertexBufferObjectManager));
+    }
+
+    private void createBackground() {
+        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, resourcesManager.getLoadingTextureRegion(), vertexBufferObjectManager));
     }
 
     @Override

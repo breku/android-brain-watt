@@ -100,7 +100,7 @@ public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
     }
 
     private void createScoreItem(Integer scorePositionX, Integer scorePositionY, Integer score) {
-        attachChild(new Text(scorePositionX, scorePositionY, ResourcesManager.getInstance().getBlackFont(),
+        attachChild(new Text(scorePositionX, scorePositionY, ResourcesManager.getInstance().getWhiteFont(),
                 score.toString(), vertexBufferObjectManager));
     }
 

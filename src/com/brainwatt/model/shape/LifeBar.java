@@ -15,7 +15,7 @@ import org.andengine.util.adt.color.Color;
  */
 public class LifeBar extends Rectangle {
 
-    private Color standardGreenColor = new Color(0.19f, 0.80f, 0.19f);
+    private Color standardGreenColor = new Color(0.7f, 0.7f, 0.7f);
     private Color goodGreenColor = new Color(0.5f, 1.0f, 0.0f);
     private Color redColor = new Color(1.0f, 0.0f, 0.0f);
 

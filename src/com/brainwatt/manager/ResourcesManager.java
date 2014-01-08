@@ -36,7 +36,8 @@ public class ResourcesManager {
     private Camera camera;
     private VertexBufferObjectManager vertexBufferObjectManager;
 
-    private BitmapTextureAtlas splashTextureAtlas, menuFontTextureAtlas, gameFontTextureAtlas, greenFontTextureAtlas;
+    private BitmapTextureAtlas splashTextureAtlas, menuFontTextureAtlas, gameFontTextureAtlas, greenFontTextureAtlas,
+            chalkFontTextureAtlas, loadingTextureAtlas;
     private BuildableBitmapTextureAtlas menuTextureAtlas, optionsTextureAtlas, aboutTextureAtlas, endGameTextureAtlas,
             recordTextureAtlas, gameTypeTextureAtlas, gameTextureAtlas;
 
@@ -62,6 +63,9 @@ public class ResourcesManager {
     // HighScore
     private ITextureRegion recordBackgroundTextureRegion, buttonHighScoreTextureRegion;
 
+    //Loading
+    private ITextureRegion loadingTextureRegion;
+
     // Game Type
     private ITextureRegion buttonAddTextureRegion, buttonSubTextureRegion, buttonMulTextureRegion, buttonDivTextureRegion,
             backgroundGameTypeTextureRegion, buttonAllTextureRegion, starGoldTextureRegion, starWhiteTextureRegion,
@@ -70,7 +74,7 @@ public class ResourcesManager {
 
     private List<Sound> winSoundList, loseSoundList, halfWinSoundList;
     private Sound startGameSound, goodClickSound, wrongClickSound;
-    private Font whiteFont, blackFont, greenFont;
+    private Font whiteFont, blackFont, greenFont, chalkFont;
 
     public static void prepareManager(Engine engine, BaseGameActivity activity, Camera camera, VertexBufferObjectManager vertexBufferObjectManager) {
         getInstance().engine = engine;
@@ -92,6 +96,7 @@ public class ResourcesManager {
         loadWhiteFont();
         loadBlackFont();
         loadGreenFont();
+        loadChalkFont();
     }
 
     public void loadGameResources() {
@@ -121,11 +126,6 @@ public class ResourcesManager {
         gameTypeTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 
         backgroundGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "background.png");
-        buttonAddTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "add.png");
-        buttonSubTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "sub.png");
-        buttonMulTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "mul.png");
-        buttonDivTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "div.png");
-        buttonAllTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "all.png");
 
         starGoldTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "goldStar.png");
         starWhiteTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "whiteStar.png");
@@ -286,13 +286,24 @@ public class ResourcesManager {
 
     public void loadSplashScreen() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
+        splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
         splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity, "splash.jpg", 0, 0);
         splashTextureAtlas.load();
     }
 
     public void loadMenuTextures() {
         menuTextureAtlas.load();
+    }
+
+    private void loadChalkFont() {
+        if (chalkFontTextureAtlas != null) {
+            return;
+        }
+        FontFactory.setAssetBasePath("font/");
+        chalkFontTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
+        chalkFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), chalkFontTextureAtlas, activity.getAssets(), "ChalkPaint.ttf", 50, true, Color.WHITE, 2, Color.WHITE);
+        chalkFontTextureAtlas.load();
+        chalkFont.load();
     }
 
     private void loadGreenFont() {
@@ -324,7 +335,7 @@ public class ResourcesManager {
         }
         FontFactory.setAssetBasePath("font/");
         menuFontTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
-        whiteFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), menuFontTextureAtlas, activity.getAssets(), "font2.ttf", 50, true, Color.WHITE, 2, Color.WHITE);
+        whiteFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), menuFontTextureAtlas, activity.getAssets(), "ChalkPaint.ttf", 50, true, Color.WHITE, 2, Color.WHITE);
         menuFontTextureAtlas.load();
         whiteFont.load();
     }
@@ -448,6 +459,10 @@ public class ResourcesManager {
         return greenFont;
     }
 
+    public Font getChalkFont() {
+        return chalkFont;
+    }
+
     public ITextureRegion getEndGameBackgroundTextureRegion() {
         return endGameBackgroundTextureRegion;
     }
@@ -521,5 +536,21 @@ public class ResourcesManager {
 
     public Sound getWrongClickSound() {
         return wrongClickSound;
+    }
+
+    public ITextureRegion getLoadingTextureRegion() {
+        return loadingTextureRegion;
+    }
+
+    public void loadLoadingResources() {
+        if (loadingTextureAtlas != null) {
+            loadingTextureAtlas.load();
+            return;
+        }
+
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/loading/");
+        loadingTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        loadingTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(loadingTextureAtlas, activity, "background.png", 0, 0);
+        loadingTextureAtlas.load();
     }
 }

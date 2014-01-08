@@ -67,6 +67,7 @@ public class SceneManager {
     public void createMainMenuScene() {
         ResourcesManager.getInstance().loadMainMenuResources();
         ResourcesManager.getInstance().loadGameTypeResources();
+        ResourcesManager.getInstance().loadLoadingResources();
         menuScene = new MainMenuScene();
         loadingScene = new LoadingScene();
         setScene(menuScene);
