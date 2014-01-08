@@ -42,7 +42,7 @@ public class ResourcesManager {
             recordTextureAtlas, gameTypeTextureAtlas, gameTextureAtlas;
 
     // Game
-    private ITextureRegion backgroundGameTextureRegion, buttonOkTextureRegion, buttonNoTextureRegion;
+    private ITextureRegion backgroundGameTextureRegion, buttonOkTextureRegion, buttonNoTextureRegion, lifeBarBorderTextureRegion;
 
     // Splash
     private ITextureRegion splashTextureRegion;
@@ -248,6 +248,7 @@ public class ResourcesManager {
         backgroundGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
         buttonOkTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "button_ok.png");
         buttonNoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "button_no.png");
+        lifeBarBorderTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bar_border.png");
 
 
         try {
@@ -552,5 +553,9 @@ public class ResourcesManager {
         loadingTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
         loadingTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(loadingTextureAtlas, activity, "background.png", 0, 0);
         loadingTextureAtlas.load();
+    }
+
+    public ITextureRegion getLifeBarBorderTextureRegion() {
+        return lifeBarBorderTextureRegion;
     }
 }

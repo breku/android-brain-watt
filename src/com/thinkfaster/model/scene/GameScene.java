@@ -141,6 +141,7 @@ public class GameScene extends BaseScene {
         ));
 
         attachChild(lifeBar);
+        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, 460, ResourcesManager.getInstance().getLifeBarBorderTextureRegion(), vertexBufferObjectManager));
 
     }
 
