@@ -93,6 +93,7 @@ public class MyActivity extends BaseGameActivity {
 
             adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
             adRequest.addTestDevice("2D91A564A65AF57C28A98B6EC9456D29");
+            adRequest.addTestDevice("7F8C8CB8DDF62CBD63E1AE7D4693C1F5");
             adView.loadAd(adRequest);
 
             AdView.LayoutParams adViewParams = new AdView.LayoutParams(

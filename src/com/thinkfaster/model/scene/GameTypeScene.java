@@ -105,7 +105,7 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
             attachChild(new Sprite(positionX - STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
             attachChild(new Sprite(positionX, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
             attachChild(new Sprite(positionX + STAR_STRIDE, positionY, resourcesManager.getStarGoldTextureRegion(), vertexBufferObjectManager));
-            attachChild(new Sprite(positionX, positionY - 25, resourcesManager.getAwesomeTextureRegion(), vertexBufferObjectManager));
+            attachChild(new Sprite(positionX, positionY - 20, resourcesManager.getAwesomeTextureRegion(), vertexBufferObjectManager));
         }
 
 
