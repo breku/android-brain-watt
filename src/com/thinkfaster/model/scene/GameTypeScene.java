@@ -50,7 +50,7 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
             for (MathParameter mathParameter : MathParameter.values()) {
 
                 if (highScoreService.isLevelUnlocked(levelDifficulty, mathParameter)) {
-                    menuScene.addMenuItem(new GameTypeMenuItem(gameTypeMenuItemID++, levelDifficulty, mathParameter, scorePositionX, scorePositionY + 10));
+                    menuScene.addMenuItem(new GameTypeMenuItem(gameTypeMenuItemID++, levelDifficulty, mathParameter, scorePositionX, scorePositionY + 18));
                     createStars(scorePositionX, scorePositionY - 15, levelDifficulty, mathParameter);
                 } else {
                     // Lock
