@@ -61,7 +61,7 @@ public class LifeBar extends Rectangle {
     }
 
     public boolean isEnd() {
-        if (getX() < -1 * ConstantsUtil.SCREEN_WIDTH / 2 + 500) {
+        if (getX() < -1 * ConstantsUtil.SCREEN_WIDTH / 2 + 5) {
             return true;
         }
         return false;
