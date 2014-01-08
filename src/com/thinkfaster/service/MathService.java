@@ -37,7 +37,7 @@ public class MathService extends BaseService {
      * @param mathEquation
      * @return
      */
-    private MathEquation makeResultIncorrectFor(MathEquation mathEquation) {
+    public MathEquation makeResultIncorrectFor(MathEquation mathEquation) {
         while (mathEquation.isCorrect()) {
             if (mathEquation.getY() == 0) {
                 mathEquation.setY(1);
@@ -48,7 +48,7 @@ public class MathService extends BaseService {
         return mathEquation;
     }
 
-    private MathEquation getCorrectResultFor(MathParameter mathParameter, LevelDifficulty levelDifficulty) {
+    public MathEquation getCorrectResultFor(MathParameter mathParameter, LevelDifficulty levelDifficulty) {
         switch (mathParameter) {
             case ADD:
                 return getAddResult(levelDifficulty, mathParameter);
