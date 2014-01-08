@@ -33,25 +33,25 @@ public class MathServiceTest {
                 MathEquation mathEquation = mathService.getCorrectResultFor(MathParameter.ADD, levelDifficulty);
                 System.out.println(String.format("Before Incorrection: %d + %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()));
                 mathEquation = mathService.makeResultIncorrectFor(mathEquation);
-                Assert.assertFalse("Incorrect Result", (mathEquation.getX() + mathEquation.getY()) == mathEquation.getResult());
+                Assert.assertFalse(String.format("Incorrect Result: %d + %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()), mathEquation.isCorrect());
             }
             for (int i = 0; i < NUMBER_OF_LOOPS; i++) {
                 MathEquation mathEquation = mathService.getCorrectResultFor(MathParameter.SUB, levelDifficulty);
                 System.out.println(String.format("Before Incorrection: %d - %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()));
                 mathEquation = mathService.makeResultIncorrectFor(mathEquation);
-                Assert.assertFalse("Incorrect Result", (mathEquation.getX() - mathEquation.getY()) == mathEquation.getResult());
+                Assert.assertFalse(String.format("Incorrect Result: %d - %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()), mathEquation.isCorrect());
             }
             for (int i = 0; i < NUMBER_OF_LOOPS; i++) {
                 MathEquation mathEquation = mathService.getCorrectResultFor(MathParameter.MUL, levelDifficulty);
                 System.out.println(String.format("Before Incorrection: %d * %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()));
                 mathEquation = mathService.makeResultIncorrectFor(mathEquation);
-                Assert.assertFalse(String.format("Incorrect Result: %d * %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()), (mathEquation.getX() * mathEquation.getY()) == mathEquation.getResult());
+                Assert.assertFalse(String.format("Incorrect Result: %d * %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()), mathEquation.isCorrect());
             }
             for (int i = 0; i < NUMBER_OF_LOOPS; i++) {
                 MathEquation mathEquation = mathService.getCorrectResultFor(MathParameter.DIV, levelDifficulty);
                 System.out.println(String.format("Before Incorrection: %d / %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()));
                 mathEquation = mathService.makeResultIncorrectFor(mathEquation);
-                Assert.assertFalse("Incorrect Result", (mathEquation.getX() / mathEquation.getY()) == mathEquation.getResult());
+                Assert.assertFalse(String.format("Incorrect Result: %d / %d = %d", mathEquation.getX(), mathEquation.getY(), mathEquation.getResult()), mathEquation.isCorrect());
             }
         }
     }
