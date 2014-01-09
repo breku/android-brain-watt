@@ -24,7 +24,7 @@ public class MathService extends BaseService {
         Debug.d(result.toString());
 
         if (!correctEquation) {
-            result = makeResultIncorrectFor(result);
+            result = makeResultIncorrectFor(result, mathParameter, levelDifficulty);
         }
 
         return result;
@@ -33,18 +33,19 @@ public class MathService extends BaseService {
 
     /**
      * Might change 0 / 1 = 0 for 0 / 0 = 0
+     * 1*0 =0
      *
      * @param mathEquation
-     * @return
+     * @param mathParameter
+     * @param levelDifficulty @return
      */
-    public MathEquation makeResultIncorrectFor(MathEquation mathEquation) {
-        while (mathEquation.isCorrect()) {
-            if (mathEquation.getY() == 0) {
-                mathEquation.setY(1);
-                return mathEquation;
-            }
-            mathEquation.setY(random.nextInt(Math.abs(mathEquation.getY())));
+    public MathEquation makeResultIncorrectFor(MathEquation mathEquation, MathParameter mathParameter, LevelDifficulty levelDifficulty) {
+        while (mathEquation.isCorrect() && mathEquation.getMathParameter().isDivision()) {
+            mathEquation = getCorrectResultFor(mathParameter, levelDifficulty);
         }
+        while ()
+
+            mathEquation.setY(random.nextInt(Math.abs(mathEquation.getY())));
         return mathEquation;
     }
 
