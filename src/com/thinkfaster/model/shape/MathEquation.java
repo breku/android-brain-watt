@@ -29,6 +29,20 @@ public class MathEquation {
         }
     }
 
+    public boolean isCorrectAndYDifferentThanZero() {
+        switch (mathParameter) {
+            case ADD:
+            case SUB:
+            case MUL:
+                return isCorrect();
+            case DIV:
+                return y == 0 || (x / y == result && x % y == 0);
+            default:
+                throw new UnsupportedOperationException();
+        }
+
+    }
+
     public Integer getX() {
         return x;
     }
