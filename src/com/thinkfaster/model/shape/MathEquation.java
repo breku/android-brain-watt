@@ -40,6 +40,14 @@ public class MathEquation {
             default:
                 throw new UnsupportedOperationException();
         }
+    }
+
+    public boolean isTheDivisionRestZero() {
+        switch (mathParameter) {
+            case DIV:
+                return x % y == 0;
+        }
+        return true;
 
     }
 
