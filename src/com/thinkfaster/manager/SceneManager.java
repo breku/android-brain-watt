@@ -3,13 +3,11 @@ package com.thinkfaster.manager;
 import com.google.ads.AdView;
 import com.thinkfaster.activity.MyActivity;
 import com.thinkfaster.model.scene.*;
-import com.thinkfaster.util.ConstantsUtil;
-import com.thinkfaster.util.LevelDifficulty;
-import com.thinkfaster.util.MathParameter;
-import com.thinkfaster.util.SceneType;
+import com.thinkfaster.util.*;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface;
+import org.andengine.ui.activity.BaseGameActivity;
 
 /**
  * User: Breku
@@ -72,6 +70,17 @@ public class SceneManager {
         loadingScene = new LoadingScene();
         setScene(menuScene);
         disposeSplashScene();
+        showAppRating();
+    }
+
+    private void showAppRating() {
+        final BaseGameActivity activity = ResourcesManager.getInstance().getActivity();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AppRater.app_launched(activity);
+            }
+        });
     }
 
 
